@@ -17,11 +17,17 @@ class Joke extends React.Component {
 
    render() {
        return (
-           <div >
-               <p>{this.props.joke}</p>
-               <p>{this.props.score}</p>
-               <i  onClick={this.handleUpVote} className="fa fa-thumbs-up" aria-hidden="true"></i>
-               <i  onClick={this.handleDownVote} className="fa fa-thumbs-down" aria-hidden="true"></i>
+            <div className="container mt-4">
+                <div className="row">
+                    <div className="col-2">
+                        <i onClick={this.handleUpVote} className="fa fa-thumbs-up" aria-hidden="true"></i>
+                        <i onClick={this.handleDownVote} className="fa fa-thumbs-down" aria-hidden="true"></i>
+                        <span>{this.props.score}</span>
+                    </div>
+                    <div className="col-10">
+                        <p>{this.props.joke}</p>
+                    </div>
+               </div>
            </div>
        )
    }

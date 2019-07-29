@@ -12,10 +12,22 @@ class Container extends React.Component {
         }
         this.upVoteJoke = this.upVoteJoke.bind(this);
         this.downVoteJoke = this.downVoteJoke.bind(this);
+        this.getTenJokes = this.getTenJokes.bind(this);
     }
 
-    
+
     async componentDidMount() {
+        if (localStorage.getItem('jokes') === null){
+            await this.getTenJokes();
+        }
+
+        this.setState(st => ({
+            jokes: JSON.parse(localStorage.getItem("jokes")),
+            loading: JSON.parse(localStorage.getItem("loading"))
+        }));
+    }
+
+    async getTenJokes(){
         let jokeArr = [];
         for (let i = 0; i < 10; i++){
             jokeArr.push(await this.getJoke());
@@ -28,7 +40,10 @@ class Container extends React.Component {
         this.setState({
             jokes: jokeInfoArr,
             loading: false
-        })
+        });
+
+        localStorage.jokes = JSON.stringify(this.state.jokes);
+        localStorage.loading = JSON.stringify(this.state.loading);
     }
 
     async getJoke() {
@@ -47,6 +62,10 @@ class Container extends React.Component {
         return jokeObj;
     }
 
+    componentDidUpdate(prevProps, prevState){
+        localStorage.jokes = JSON.stringify(this.state.jokes);
+        localStorage.loading = JSON.stringify(this.state.loading);
+    }
 
     upVoteJoke(id){
         this.setState(st => ({
@@ -85,9 +104,11 @@ class Container extends React.Component {
         const body = this.state.loading
             ? <p>Loading</p>
             : <div>{jokes}</div>
+
         return (
-            <div>
+            <div className="container">
                {body}
+               <button onClick={this.getTenJokes} className="btn btn-primary">Get 10 more jokes!</button>
             </div>
         )
 
